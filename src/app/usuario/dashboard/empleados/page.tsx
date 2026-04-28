@@ -13,6 +13,10 @@ interface Empleado {
   apellido: string;
   mail: string;
   telefono: string;
+  dni: string;
+  domicilio: string;
+  cuil: string;
+  fechaNac: string;
 }
 
 export default function EmpleadosPage() {
@@ -28,11 +32,11 @@ export default function EmpleadosPage() {
         try {
           const authRes = await api.get('/auth/verify-token');
           const rol = authRes.data.user?.rol;
-          
-          if (rol !== 'Admin' && rol !== 'Empleado') {
-            router.push('/usuario/login');
+
+        if (rol !== 'Admin') {
+            router.push('/usuario/dashboard');
             return;
-          }
+          }  
         } catch (authError) {
           router.push('/usuario/login');
           return;
@@ -93,7 +97,7 @@ export default function EmpleadosPage() {
           </Link>
         </header>
 
-        <div className="w-full max-w-5xl mx-auto text-gray-600 bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+        <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
           {cargando ? (
             <div className="flex justify-center p-10">
               <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
@@ -110,6 +114,10 @@ export default function EmpleadosPage() {
                   <th className="p-4 font-semibold">Apellido</th>
                   <th className="p-4 font-semibold">Email</th> 
                   <th className="p-4 font-semibold">Teléfono</th>
+                  <th className="p-4 font-semibold">DNI</th>
+                  <th className="p-4 font-semibold">Domicilio</th>
+                  <th className="p-4 font-semibold">CUIL</th>
+                  <th className="p-4 font-semibold">Fecha de Nacimiento</th>
                   <th className="p-4 font-semibold">Acciones</th>
                 </tr>
               </thead>
@@ -121,6 +129,11 @@ export default function EmpleadosPage() {
                       <td className="p-4 font-medium">{empleado.apellido}</td>
                       <td className="p-4 font-medium">{empleado.mail}</td>
                       <td className="p-4 font-medium">{empleado.telefono}</td>
+                      <td className="p-4 font-medium">{empleado.dni}</td>
+                      <td className="p-4 font-medium">{empleado.domicilio}</td>
+                      <td className="p-4 font-medium">{empleado.cuil}</td>
+                      <td className="p-4 font-medium">{empleado.fechaNac ? new Date(empleado.fechaNac).toLocaleDateString('es-AR', { timeZone: 'UTC' }) : '-'}</td>
+
                       <td className="p-4 text-center space-x-2">
                       <Link href={`/usuario/dashboard/empleados/${empleado.id}`} className="inline-block bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors font-medium">
                         Editar
@@ -133,7 +146,7 @@ export default function EmpleadosPage() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={6} className="p-8 text-center text-gray-500">
+                    <td colSpan={9} className="p-8 text-center text-gray-500">
                       No hay empleados registrados todavía.
                     </td>
                   </tr>

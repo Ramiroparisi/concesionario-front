@@ -34,7 +34,7 @@ export const getEmpleadoById = async (id: number) => {
 };
 
 export const updateEmpleado = async (id: number, datos: DatosEmpleado) => {
-  const response = await api.put(`/usuario/${id}`, datos);
+  const response = await api.put(`/usuarios/${id}`, datos);
   return response.data.data;
 };
 

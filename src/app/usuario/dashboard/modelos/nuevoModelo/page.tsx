@@ -219,14 +219,14 @@ export default function NuevaModeloPage() {
               <button
                 type="button"
                 onClick={() => router.back()}
-                className="flex-1 px-4 py-3 border border-gray-300 text-gray-600 rounded-xl hover:bg-gray-50 transition-colors font-medium"
+                className="flex-1 px-4 py-3 bg-red-500 text-white border border-gray-600 rounded-xl hover:bg-red-700 transition-colors font-medium"
               >
                 Cancelar
               </button>
               <button
                 type="submit"
                 disabled={enviando}
-                className={`flex-1 px-4 py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-900/20 hover:bg-blue-700 transition-all ${
+                className={`flex-1 px-4 py-3 bg-blue-600 text-white border border-gray-600 rounded-xl font-bold shadow-lg shadow-blue-900/20 hover:bg-blue-700 transition-all ${
                   enviando ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
               >

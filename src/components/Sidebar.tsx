@@ -8,6 +8,8 @@ import Link from 'next/link';
 
 interface UserData {
   rol: 'Admin' | 'Empleado';
+  nombre: string;
+  apellido: string;
 }
 
 interface SidebarProps {
@@ -54,8 +56,11 @@ export default function Sidebar({ isOpen }: SidebarProps) {
     >
       <div className="flex flex-col h-full min-w-[16rem]">
         <div className="p-6 text-center border-b border-gray-700">
-          <span className="text-[16px] bg-blue-900/50 text-blue-200 px-4 py-1 rounded-full uppercase border border-blue-800 font-bold tracking-wider">
+          <span className="text-[18px] bg-blue-900/50 text-blue-200 px-4 py-1 rounded-full uppercase border border-blue-800 font-bold tracking-wider">
             {user.rol}
+          </span>
+          <span className="text-[14px] bg-blue-800/50 text-blue-200 px-4 py-1 rounded-full uppercase border border-blue-800 font-bold tracking-wider mt-3 block">
+            {user.nombre + ' ' + user.apellido}
           </span>
         </div>
         

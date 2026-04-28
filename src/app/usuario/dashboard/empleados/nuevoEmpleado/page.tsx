@@ -15,6 +15,10 @@ export default function NuevoEmpleadoPage() {
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState('');
 
+  const [dni, setDni] = useState('');
+  const [domicilio, setDomicilio] = useState('');
+  const [cuil, setCuil] = useState('');
+  const [fechaNac, setFechaNac] = useState('');
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [mail, setMail] = useState('');
@@ -29,7 +33,7 @@ export default function NuevoEmpleadoPage() {
         const rol = authRes.data.user?.rol;
         
         if (rol !== 'Admin') {
-          router.push('/usuario/login');
+          router.push('/usuario/dashboard');
           return;
         }
         
@@ -53,7 +57,11 @@ export default function NuevoEmpleadoPage() {
       mail,
       contrasena,
       telefono,
-      rol
+      rol,
+      dni,
+      domicilio,
+      cuil,
+      fechaNac
     };
 
     try {
@@ -102,7 +110,16 @@ export default function NuevoEmpleadoPage() {
             )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">DNI</label>
+                <input
+                  type="number"
+                  value={dni}
+                  onChange={(e) => setDni(e.target.value)}
+                  required
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none text-gray-800 bg-white"
+                />
+              </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Nombre</label>
                 <input
@@ -152,6 +169,39 @@ export default function NuevoEmpleadoPage() {
                   type="number"
                   value={telefono}
                   onChange={(e) => setTelefono(e.target.value)}
+                  required
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none text-gray-800"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Domicilio</label>
+                <input
+                  type="text"
+                  value={domicilio}
+                  onChange={(e) => setDomicilio(e.target.value)}
+                  required
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none text-gray-800"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">CUIL</label>
+                <input
+                  type="number"
+                  value={cuil}
+                  onChange={(e) => setCuil(e.target.value)}
+                  required
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none text-gray-800"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Fecha de Nacimiento</label>
+                <input
+                  type="date"
+                  value={fechaNac}
+                  onChange={(e) => setFechaNac(e.target.value)}
                   required
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none text-gray-800"
                 />

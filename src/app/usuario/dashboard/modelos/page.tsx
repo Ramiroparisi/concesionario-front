@@ -115,7 +115,7 @@ export default function ModelosPage() {
           </div>
           
           <Link href="/usuario/dashboard/modelos/nuevoModelo" className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition font-medium shadow-lg shadow-green-900/20">
-            + Nuevo Modelo
+            Nuevo Modelo
           </Link>
         </header>
 

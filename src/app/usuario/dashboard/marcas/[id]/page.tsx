@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 import { getMarcaById, updateMarca } from '@/services/marcaService';
+import { api } from '@/lib/axios';
 
 export default function EditarMarcaPage() {
   const router = useRouter();
@@ -22,6 +23,19 @@ export default function EditarMarcaPage() {
   useEffect(() => {
     const fetchMarca = async () => {
       try {
+        try {
+          const authRes = await api.get('/auth/verify-token');
+          const rol = authRes.data.user?.rol;
+          if (rol !== 'Admin' && rol !== 'Empleado') {
+            router.push('/usuario/login');
+            return;
+          }
+        } catch {
+          router.push('/usuario/login');
+          return;
+        }
+
+
         const marca = await getMarcaById(marcaId);
         setNombre(marca.nombre);
         setNombreOriginal(marca.nombre);
