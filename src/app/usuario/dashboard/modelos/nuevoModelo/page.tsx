@@ -226,7 +226,7 @@ export default function NuevaModeloPage() {
               <button
                 type="submit"
                 disabled={enviando}
-                className={`flex-1 px-4 py-3 bg-blue-600 text-white border border-gray-600 rounded-xl font-bold shadow-lg shadow-blue-900/20 hover:bg-blue-700 transition-all ${
+                className={`flex-1 px-4 py-3 bg-green-600 text-white border border-gray-600 rounded-xl font-bold shadow-lg shadow-green-900/20 hover:bg-green-700 transition-all ${
                   enviando ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
               >

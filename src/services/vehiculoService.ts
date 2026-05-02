@@ -10,18 +10,26 @@ export const getVehiculos = async () => {
   }
 };
 
-export const createVehiculo = async (datosVehiculo: unknown) => {
-  const response = await api.post('/vehiculos', datosVehiculo);
+export const createVehiculo = async (formData: FormData) => {
+  const response = await api.post('/vehiculos', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data.data;
-}
+};
 
 export const getVehiculoById = async (id: number) => {
   const response = await api.get(`/vehiculos/${id}`);
   return response.data.data;
 };
 
-export const updateVehiculo = async (id: number, datosVehiculo: unknown) => {
-  const response = await api.put(`/vehiculos/${id}`, datosVehiculo);
+export const updateVehiculo = async (id: number, formData: FormData) => {
+  const response = await api.put(`/vehiculos/${id}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data.data;
 };
 

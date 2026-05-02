@@ -45,7 +45,7 @@ export default function ModelosPage() {
             router.push('/usuario/login');
             return;
           }
-        } catch (authError) {
+        } catch {
           router.push('/usuario/login');
           return;
         }
@@ -53,9 +53,9 @@ export default function ModelosPage() {
         const data = await getModelos();
         setModelos(data); 
 
-      } catch (err) {
+      } catch (error) {
         setError('No se pudieron cargar los modelos');
-        console.error(err);
+        console.error(error);
       } finally {
         setCargando(false);
       }
@@ -71,7 +71,7 @@ export default function ModelosPage() {
       try {
         await deleteModelo(id);
         setModelos(modelos.filter((modelo) => modelo.id !== id));
-      } catch (err) {
+      } catch {
         alert('Hubo un error al intentar eliminar el modelo. Verifica que no tenga vehículos asociados.');
       }
     }
@@ -79,7 +79,7 @@ export default function ModelosPage() {
 
   const marcasDisponibles = Array.from(
     new Set(modelos.map(m => typeof m.marca === 'object' ? m.marca.nombre : m.marca))
-  );
+  ).sort((a, b) => a.localeCompare(b, 'es', { sensitivity: 'base' }));
 
   const modelosFiltrados = modelos.filter((modelo) => {
     const nombreModelo = modelo.nombre.toLowerCase();
@@ -89,7 +89,7 @@ export default function ModelosPage() {
     const coincideMarca = marcaFiltro === '' || nombreMarca === marcaFiltro;
 
     return coincideBusqueda && coincideMarca;
-  });
+  }).sort((a, b) => a.marca.nombre.localeCompare(b.marca.nombre, 'es', { sensitivity: 'base' }));
 
   return (
     <div className="flex h-screen bg-gray-900 overflow-hidden">
@@ -167,7 +167,7 @@ export default function ModelosPage() {
               <tbody>
                   {modelosFiltrados.length > 0 ? (
                     modelosFiltrados.map((modelo) => (
-                      <tr key={modelo.id} className="border-b text-gray-800 border-gray-200 hover:bg-gray-100 transition-colors">
+                      <tr key={modelo.id} className="border-b text-gray-800 border-gray-200 hover:bg-gray-300 transition-colors">
                         <td className="p-4 font-medium">{modelo.nombre}</td>
                         <td className="p-4 text-center">{typeof modelo.marca === 'object' ? modelo.marca.nombre : modelo.marca}</td>                        
                         <td className="p-4 text-center">{modelo.cantPuertas}</td>

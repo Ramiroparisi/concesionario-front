@@ -28,6 +28,7 @@ interface Vehiculo {
   patente: string;
   precio: number;
   anio: number;
+  kilometraje: number;
   estado: string;
   modelo: Modelo; 
   multimedia: Multimedia[];
@@ -200,10 +201,8 @@ export default function VehiculosPage() {
             {vehiculosFiltrados.length > 0 ? (
               vehiculosFiltrados.map((vehiculo) => {
               const nombreMarca = typeof vehiculo.modelo === 'object' && typeof vehiculo.modelo.marca === 'object' ? vehiculo.modelo.marca.nombre : 'Sin Marca';
-                const nombreModelo = typeof vehiculo.modelo === 'object' ? vehiculo.modelo.nombre : vehiculo.modelo;
-                const fotoPortada = vehiculo.multimedia && vehiculo.multimedia.length > 0 
-                  ? vehiculo.multimedia[0].archivo 
-                  : null;
+              const nombreModelo = typeof vehiculo.modelo === 'object' ? vehiculo.modelo.nombre : vehiculo.modelo;
+              const fotoPortada = vehiculo.multimedia && vehiculo.multimedia.length > 0 ? `http://localhost:3000/uploads/${vehiculo.multimedia[0].archivo}` : null;
 
                 return (
                   <Link 
@@ -245,17 +244,20 @@ export default function VehiculosPage() {
                       <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-1">
                         {nombreModelo}
                       </h3>
-                      
+                      <span className="text-sm text-gray-500 font-semibold mb-1 uppercase tracking-wide">
+                        {vehiculo.anio?.toLocaleString('es-AR')} | {vehiculo.kilometraje?.toLocaleString('es-AR')}km
+                      </span>
+
                       <div className="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
-                        <span className="text-2xl font-black text-green-600">
+                        <span className="text-2xl font-black text-gray-900">
                           ${vehiculo.precio?.toLocaleString('es-AR')}
                         </span>
-                        
+
                         <div className="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
-                        </div>
+                        </div>  
                       </div>
                     </div>
                   </Link>

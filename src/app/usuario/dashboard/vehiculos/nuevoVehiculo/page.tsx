@@ -17,7 +17,7 @@ interface Marca {
 interface Modelo {
   id: number;
   nombre: string;
-  marca: Marca ;
+  marca: Marca;
 }
 
 export default function NuevoVehiculoPage() {
@@ -35,6 +35,7 @@ export default function NuevoVehiculoPage() {
   const [patente, setPatente] = useState('');
   const [anio, setAnio] = useState('');
   const [color, setColor] = useState('');
+  const [moneda, setMoneda] = useState('USD');
   const [precio, setPrecio] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [kilometraje, setKilometraje] = useState('');
@@ -92,6 +93,7 @@ export default function NuevoVehiculoPage() {
       formData.append('estado', estado);
       formData.append('color', color);
       formData.append('descripcion', descripcion);
+      formData.append('moneda', moneda);
 
       if (fotos) {
         for (let i = 0; i < fotos.length; i++) {
@@ -197,13 +199,14 @@ export default function NuevoVehiculoPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Patente</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Patente <span className="text-gray-400 font-normal text-xs">(Dejar vacío si es 0km)</span>
+                </label> 
                 <input
                   type="text"
                   value={patente}
                   onChange={(e) => setPatente(e.target.value.toUpperCase())}
                   placeholder="Ej: AB123CD o AA111AA"
-                  required
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none text-gray-800 uppercase"
                 />
               </div>
@@ -242,6 +245,19 @@ export default function NuevoVehiculoPage() {
                   required
                   className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none text-gray-800"
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Moneda</label>
+                <select
+                  value={moneda}
+                  onChange={(e) => setMoneda(e.target.value)}
+                  required
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none text-gray-800 bg-white"
+                >
+                  <option value="USD">USD</option>
+                  <option value="ARS">ARS</option>
+                </select>
               </div>
 
               <div>
