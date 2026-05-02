@@ -15,9 +15,18 @@ import { BsFillPersonCheckFill } from "react-icons/bs";
 import { PiHandEye } from "react-icons/pi";
 import { FaCheckCircle } from "react-icons/fa";
 
-interface Marca { id: number; nombre: string; }
-interface Modelo { id: number; nombre: string; marca: Marca; }
-interface Multimedia { id: number; archivo: string; }
+interface Marca { 
+  id: number; 
+  nombre: string; 
+}
+interface Modelo { id: number; 
+  nombre: string; 
+  marca: Marca; 
+}
+interface Multimedia { id: number;
+  archivo: string; 
+  }
+
 interface Vehiculo {
   id: number;
   patente: string;
@@ -38,6 +47,8 @@ export default function VehiculosPage() {
   const [marcaFiltro, setMarcaFiltro] = useState('');
   const [modeloFiltro, setModeloFiltro] = useState('');
   const [estadoFiltro, setEstadoFiltro] = useState('');
+  const [precioMin, setPrecioMin] = useState('');
+  const [precioMax, setPrecioMax] = useState('');
   const [cantidadVisible, setCantidadVisible] = useState(4);
 
   useEffect(() => {
@@ -69,8 +80,11 @@ export default function VehiculosPage() {
     const coincideMarca = marcaFiltro === '' || nombreMarca === marcaFiltro;
     const coincideModelo = modeloFiltro === '' || nombreModelo === modeloFiltro;
     const coincideEstado = estadoFiltro === '' || vehiculo.estado === estadoFiltro;
+    const min = precioMin === '' ? 0 : parseFloat(precioMin);
+    const max = precioMax === '' ? Infinity : parseFloat(precioMax);
+    const coincidePrecio = vehiculo.precio >= min && vehiculo.precio <= max;
 
-    return coincideBusqueda && coincideMarca && coincideModelo && coincideEstado;
+    return coincideBusqueda && coincideMarca && coincideModelo && coincideEstado && coincidePrecio;
   });
 
   const vehiculosPaginados = vehiculosFiltrados.slice(0, cantidadVisible);
@@ -108,7 +122,8 @@ export default function VehiculosPage() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">   
-          <div className="bg-white p-8 rounded-[40px] border-2 border-black shadow-2xl shadow-gray-200/50 flex flex-col items-start text-left min-h-[450px]">
+
+          <div className="bg-white p-8 rounded-[40px] border-2 border-black shadow-2xl shadow-gray-200/50 flex flex-col items-start text-left min-h-[450px] transition-transform duration-300 hover:scale-105">
             <GoGear size={48} className="mb-6 text-black" />
             <h3 className="text-2xl font-medium text-gray-900 leading-tight mb-4">
               Servicio técnico oficial
@@ -118,7 +133,7 @@ export default function VehiculosPage() {
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-[40px] border-2 border-black shadow-2xl shadow-gray-200/50 flex flex-col items-start text-left min-h-[450px]">
+          <div className="bg-white p-8 rounded-[40px] border-2 border-black shadow-2xl shadow-gray-200/50 flex flex-col items-start text-left min-h-[450px] transition-transform duration-300 hover:scale-105">
             <BsFillPersonCheckFill size={48} className="mb-6 text-black" />
             <h3 className="text-2xl font-medium text-gray-900 leading-tight mb-4">
               Atención personalizada
@@ -128,7 +143,7 @@ export default function VehiculosPage() {
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-[40px] border-2 border-black shadow-2xl shadow-gray-200/50 flex flex-col items-start text-left min-h-[450px]">
+          <div className="bg-white p-8 rounded-[40px] border-2 border-black shadow-2xl shadow-gray-200/50 flex flex-col items-start text-left min-h-[450px] transition-transform duration-300 hover:scale-105">
             <PiHandEye size={48} className="mb-6 text-black" />
             <h3 className="text-2xl font-medium text-gray-900 leading-tight mb-4">
               Recepción Activa
@@ -138,7 +153,7 @@ export default function VehiculosPage() {
             </p>
           </div>
 
-          <div className="bg-white p-8 rounded-[40px] border-2 border-black shadow-2xl shadow-gray-200/50 flex flex-col items-start text-left min-h-[450px]">
+          <div className="bg-white p-8 rounded-[40px] border-2 border-black shadow-2xl shadow-gray-200/50 flex flex-col items-start text-left min-h-[450px] transition-transform duration-300 hover:scale-105">
             <FaCheckCircle size={48} className="mb-6 text-black" />
             <h3 className="text-2xl font-medium text-gray-900 leading-tight mb-4">
               Gestión y patentamiento
@@ -157,57 +172,77 @@ export default function VehiculosPage() {
         </h2>
 
         {!cargando && !error && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-            <input
-              type="text"
-              placeholder="Buscar modelo"
-              value={busqueda}
-              onChange={(e) => { 
-                setBusqueda(e.target.value); 
-                setCantidadVisible(4);
-              }}
-              className="px-4 py-3 rounded-none border-b border-gray-300 focus:border-black outline-none text-gray-800 bg-transparent transition-colors" />
+          <div className="flex flex-col gap-8 mb-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <input
+                type="text"
+                placeholder="Buscar modelo"
+                value={busqueda}
+                onChange={(e) => { setBusqueda(e.target.value); setCantidadVisible(20); }}
+                className="px-4 py-3 rounded-none border border-gray-400 focus:border-black outline-none text-gray-800 bg-transparent transition-colors font-light" 
+              />
 
-            <select
-              value={marcaFiltro}
-              onChange={(e) => { 
-                setMarcaFiltro(e.target.value); 
-                setModeloFiltro(''); 
-                setCantidadVisible(4);
-              }}
-              className="px-4 py-3 rounded-none border-b border-gray-300 focus:border-black outline-none text-gray-800 bg-transparent transition-colors appearance-none">
-            <option value="">Todas las marcas</option>
-              {marcasDisponibles.map((marca, index) => (
-            <option key={`marca-${index}`} value={marca}>{marca}</option>
-            ))}
-            </select>
+              <select
+                value={marcaFiltro}
+                onChange={(e) => { setMarcaFiltro(e.target.value); setModeloFiltro(''); setCantidadVisible(20); }}
+                className="px-4 py-3 rounded-none border border-gray-400 focus:border-black outline-none text-gray-800 bg-transparent transition-colors appearance-none font-light">
+                <option value="">Todas las marcas</option>
+                {marcasDisponibles.map((marca, index) => (
+                  <option key={`marca-${index}`} value={marca}>{marca}</option>
+                ))}
+              </select>
 
-            <select
-              value={modeloFiltro}
-              onChange={(e) => { 
-                setModeloFiltro(e.target.value); 
-                setCantidadVisible(4);
-              }}
-            disabled={!marcaFiltro}
-            className={`px-4 py-3 rounded-none border-b outline-none transition-colors appearance-none ${!marcaFiltro ? 'border-gray-200 text-gray-400 cursor-not-allowed bg-transparent' : 'border-gray-300 focus:border-black text-gray-800 bg-transparent'}`}>
-            <option value="">Todos los modelos</option>
-              {modelosDisponibles.map((modelo, index) => (
-            <option key={`modelo-${index}`} value={modelo}>{modelo}</option>
-            ))}
-            </select>
+              <select
+                value={modeloFiltro}
+                onChange={(e) => { setModeloFiltro(e.target.value); setCantidadVisible(20); }}
+                disabled={!marcaFiltro}
+                className={`px-4 py-3 rounded-none border border-gray-400 focus:border-black outline-none transition-colors appearance-none font-light ${!marcaFiltro ? 'border-gray-200 text-gray-400 cursor-not-allowed bg-transparent' : 'border-gray-300 focus:border-black text-gray-800 bg-transparent'}`}>
+                <option value="">Todos los modelos</option>
+                {modelosDisponibles.map((modelo, index) => (
+                  <option key={`modelo-${index}`} value={modelo}>{modelo}</option>
+                ))}
+              </select>
 
-            <select
-              value={estadoFiltro}
-              onChange={(e) => { 
-                setEstadoFiltro(e.target.value); 
-                setCantidadVisible(4);
-              }}
-              className="px-4 py-3 rounded-none border-b border-gray-300 focus:border-black outline-none text-gray-800 bg-transparent transition-colors appearance-none">
-            <option value="">Todos los estados</option>
-              {estadosDisponibles.map((estado, index) => (
-            <option key={`estado-${index}`} value={estado}>{estado}</option>
-            ))}
-            </select>
+              <select
+                value={estadoFiltro}
+                onChange={(e) => { setEstadoFiltro(e.target.value); setCantidadVisible(20); }}
+                className="px-4 py-3 rounded-none border border-gray-400 focus:border-black outline-none text-gray-800 bg-transparent transition-colors appearance-none font-light">
+                <option value="">Todos los estados</option>
+                {estadosDisponibles.map((estado, index) => (
+                  <option key={`estado-${index}`} value={estado}>{estado}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              <span className="text-xs uppercase tracking-[0.2em] text-gray-400 font-medium">Rango de precio (US$)</span>
+              <div className="flex items-center gap-4 w-full sm:w-auto">
+                <input
+                  type="number"
+                  placeholder="Mínimo"
+                  value={precioMin}
+                  onChange={(e) => { setPrecioMin(e.target.value); setCantidadVisible(20); }}
+                  className="w-full sm:w-32 px-4 py-2 rounded-none border border-gray-400 focus:border-black outline-none text-gray-800 bg-transparent transition-colors text-sm font-light"
+                />
+                <span className="text-gray-300">—</span>
+                <input
+                  type="number"
+                  placeholder="Máximo"
+                  value={precioMax}
+                  onChange={(e) => { setPrecioMax(e.target.value); setCantidadVisible(20); }}
+                  className="w-full sm:w-32 px-4 py-2 rounded-none border border-gray-400 focus:border-black outline-none text-gray-800 bg-transparent transition-colors text-sm font-light"
+                />
+              </div>
+              
+              {(precioMin || precioMax) && (
+                <button 
+                  onClick={() => { setPrecioMin(''); setPrecioMax(''); }}
+                  className="text-[10px] uppercase tracking-widest text-gray-400 hover:text-black transition-colors"
+                >
+                  Limpiar precio
+                </button>
+              )}
+            </div>
           </div>
         )}
 
