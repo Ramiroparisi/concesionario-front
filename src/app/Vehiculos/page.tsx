@@ -101,13 +101,13 @@ export default function VehiculosPage() {
                 placeholder="Buscar modelo"
                 value={busqueda}
                 onChange={(e) => { setBusqueda(e.target.value); setCantidadVisible(20); }}
-                className="px-4 py-3 rounded-none border border-gray-400 focus:border-black outline-none text-gray-800 bg-transparent transition-colors font-light" 
+                className="px-4 py-3 rounded-none border-b border-gray-400 focus:border-black outline-none text-gray-800 bg-transparent transition-colors font-light" 
               />
 
               <select
                 value={marcaFiltro}
                 onChange={(e) => { setMarcaFiltro(e.target.value); setModeloFiltro(''); setCantidadVisible(20); }}
-                className="px-4 py-3 rounded-none border border-gray-400 focus:border-black outline-none text-gray-800 bg-transparent transition-colors appearance-none font-light">
+                className="px-4 py-3 rounded-none border-b border-gray-400 focus:border-black outline-none text-gray-800 bg-transparent transition-colors appearance-none font-light">
                 <option value="">Todas las marcas</option>
                 {marcasDisponibles.map((marca, index) => (
                   <option key={`marca-${index}`} value={marca}>{marca}</option>
@@ -118,7 +118,7 @@ export default function VehiculosPage() {
                 value={modeloFiltro}
                 onChange={(e) => { setModeloFiltro(e.target.value); setCantidadVisible(20); }}
                 disabled={!marcaFiltro}
-                className={`px-4 py-3 rounded-none border border-gray-400 focus:border-black outline-none transition-colors appearance-none font-light ${!marcaFiltro ? 'border-gray-200 text-gray-400 cursor-not-allowed bg-transparent' : 'border-gray-300 focus:border-black text-gray-800 bg-transparent'}`}>
+                className={`px-4 py-3 rounded-none border-b border-gray-400 focus:border-black outline-none transition-colors appearance-none font-light ${!marcaFiltro ? 'border-gray-200 text-gray-400 cursor-not-allowed bg-transparent' : 'border-gray-300 focus:border-black text-gray-800 bg-transparent'}`}>
                 <option value="">Todos los modelos</option>
                 {modelosDisponibles.map((modelo, index) => (
                   <option key={`modelo-${index}`} value={modelo}>{modelo}</option>
@@ -128,7 +128,7 @@ export default function VehiculosPage() {
               <select
                 value={estadoFiltro}
                 onChange={(e) => { setEstadoFiltro(e.target.value); setCantidadVisible(20); }}
-                className="px-4 py-3 rounded-none border border-gray-400 focus:border-black outline-none text-gray-800 bg-transparent transition-colors appearance-none font-light">
+                className="px-4 py-3 rounded-none border-b border-gray-400 focus:border-black outline-none text-gray-800 bg-transparent transition-colors appearance-none font-light">
                 <option value="">Todos los estados</option>
                 {estadosDisponibles.map((estado, index) => (
                   <option key={`estado-${index}`} value={estado}>{estado}</option>

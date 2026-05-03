@@ -9,6 +9,8 @@ import { getVehiculoById } from '@/services/vehiculoService';
 import { BsSpeedometer2, BsCalendarDate, BsTags, BsFuelPump, BsDoorOpen } from "react-icons/bs";
 import { IoColorPaletteOutline } from "react-icons/io5";
 import { TbFileDescription, TbEngine, TbManualGearbox } from "react-icons/tb";
+import { api } from '@/lib/axios';
+import { useSearchParams } from 'next/navigation';
 
 interface Marca { 
   id: number;
@@ -53,6 +55,9 @@ export default function VehiculoDetallePage() {
   const [imagenActiva, setImagenActiva] = useState<string | null>(null);
   const [mostrarTodasCaract, setMostrarTodasCaract] = useState(false);
 
+  const searchParams = useSearchParams();
+  const status = searchParams.get('status');
+
   useEffect(() => {
     const fetchVehiculo = async () => {
       try {
@@ -83,6 +88,18 @@ export default function VehiculoDetallePage() {
       fetchVehiculo();
     }
   }, [id]);
+
+useEffect(() => {
+    if (status === 'approved') { 
+      const preferenceId = searchParams.get('preference_id');
+      const paymentId = searchParams.get('payment_id');
+
+      api.post('/reservas/confirmar', { preference_id: preferenceId, payment_id: paymentId })
+        .then(() => {
+          alert("¡Pago aprobado! La reserva está activa y se enviaron los comprobantes por mail.");
+        });
+    }
+  }, [status, searchParams]);
 
   if (cargando) {
     return (

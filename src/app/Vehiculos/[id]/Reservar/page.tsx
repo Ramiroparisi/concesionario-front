@@ -6,6 +6,8 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { getVehiculoById } from '@/services/vehiculoService';
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
+import { api } from '@/lib/axios';
 
 interface Marca { id: number; nombre: string; }
 interface Modelo { id: number; nombre: string; marca: Marca; }
@@ -21,6 +23,9 @@ interface Vehiculo {
   multimedia: Multimedia[];
 }
 
+
+initMercadoPago('TEST-c105d0c7-bf5a-46f0-b129-9290a12c712a'); 
+
 export default function ReservarVehiculoPage() {
   const params = useParams();
   const router = useRouter();
@@ -30,11 +35,14 @@ export default function ReservarVehiculoPage() {
   const [cargando, setCargando] = useState(true);
   const [procesandoPago, setProcesandoPago] = useState(false);
   const [error, setError] = useState('');
+  
   const [nombreCli, setNombreCli] = useState('');
   const [apellidoCli, setApellidoCli] = useState('');
   const [dni, setDni] = useState('');
   const [mail, setMail] = useState('');
   const [telefono, setTelefono] = useState('');
+  
+  const [preferenceId, setPreferenceId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchVehiculo = async () => {
@@ -67,38 +75,34 @@ export default function ReservarVehiculoPage() {
     e.preventDefault();
     setProcesandoPago(true);
 
-    const importeSenia = 100;
+    if (!vehiculo?.id) {
+      alert("Error: No se encontró el vehículo para reservar.");
+      setProcesandoPago(false);
+      return;
+    }
+
+    const IMPORTE_SENA = 100;
 
     const reservaData = {
-      vehiculo_id: vehiculo?.id,
-      nombreCli,
-      apellidoCli,
+      vehiculoId: vehiculo.id,
+      nombre: nombreCli,
+      apellido: apellidoCli,
       dni,
       mail,
       telefono,
-      importe: importeSenia
+      importe: IMPORTE_SENA
     };
 
     try {
-      /* 
-        AQUÍ VA LA LÓGICA DE MERCADO PAGO:
-        1. Envías 'reservaData' a tu backend (Node.js/Spring Boot, etc).
-        2. Tu backend guarda la reserva en estado "Pendiente/Activa".
-        3. Tu backend se comunica con la API de Mercado Pago y crea una "Preferencia".
-        4. Tu backend te devuelve el 'init_point' (la URL de pago de MP).
-        5. Rediriges al usuario a esa URL.
-      */
-
-      console.log('Enviando datos al backend para crear preferencia de MP...', reservaData);
+      const res = await api.post('/reservas/preferencia', reservaData);
+      setPreferenceId(res.data.preferenceId);
       
-      setTimeout(() => {
-        alert('Redirigiendo a Mercado Pago... (Implementar integración)');
-        setProcesandoPago(false);
-      }, 2000);
-
+      console.log('Preferencia creada con éxito:', res.data.preferenceId);
+      
     } catch (error) {
-      console.error(error);
-      alert('Hubo un error al procesar la reserva.');
+      console.error("Error al crear preferencia:", error);
+      alert('Hubo un error al procesar la reserva. Por favor intenta nuevamente.');
+    } finally {
       setProcesandoPago(false);
     }
   };
@@ -187,79 +191,84 @@ export default function ReservarVehiculoPage() {
             <h2 className="text-2xl font-normal text-gray-900 mb-8 uppercase tracking-widest">
               Tus Datos
             </h2>
+            {!preferenceId ? (
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-2">Nombre</label>
+                    <input 
+                      required type="text" 
+                      value={nombreCli} onChange={(e) => setNombreCli(e.target.value)}
+                      className="w-full px-2 py-3 border border-gray-400 rounded-[10px] focus:border-black outline-none transition-colors font-light text-gray-900"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-2">Apellido</label>
+                    <input 
+                      required type="text" 
+                      value={apellidoCli} onChange={(e) => setApellidoCli(e.target.value)}
+                      className="w-full px-2 py-3 border border-gray-400 rounded-[10px] focus:border-black outline-none transition-colors font-light text-gray-900"
+                    />
+                  </div>
+                </div>
 
-            <form onSubmit={handleSubmit} className="space-y-8">
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-2">DNI</label>
+                    <input 
+                      required type="text" 
+                      value={dni} onChange={(e) => setDni(e.target.value)}
+                      className="w-full px-2 py-3 border border-gray-400 rounded-[10px] focus:border-black outline-none transition-colors font-light text-gray-900"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-2">Teléfono</label>
+                    <input 
+                      required type="tel" 
+                      value={telefono} onChange={(e) => setTelefono(e.target.value)}
+                      className="w-full px-2 py-3 border border-gray-400 rounded-[10px] focus:border-black outline-none transition-colors font-light text-gray-900"
+                    />
+                  </div>
+                </div>
+
                 <div>
-                  <label className="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-2">Nombre</label>
+                  <label className="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-2">Correo Electrónico</label>
                   <input 
-                    required type="text" 
-                    value={nombreCli} onChange={(e) => setNombreCli(e.target.value)}
+                    required type="email" 
+                    value={mail} onChange={(e) => setMail(e.target.value)}
                     className="w-full px-2 py-3 border border-gray-400 rounded-[10px] focus:border-black outline-none transition-colors font-light text-gray-900"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-2">Apellido</label>
-                  <input 
-                    required type="text" 
-                    value={apellidoCli} onChange={(e) => setApellidoCli(e.target.value)}
-                    className="w-full px-2 py-3 border border-gray-400 rounded-[10px] focus:border-black outline-none transition-colors font-light text-gray-900"
-                  />
+
+                <div className="pt-6 border-t border-gray-100">
+                  <p className="text-xs text-gray-500 font-light mb-6 leading-relaxed">
+                    Al hacer clic en Pagar seña, serás redirigido a la plataforma segura de Mercado Pago para completar la operación. La seña asegura la reserva del vehículo a tu nombre y bloquea la disponibilidad para otros usuarios.
+                  </p>
+                  <button 
+                    type="submit"
+                    disabled={procesandoPago}
+                    className="w-full flex items-center justify-center gap-3 py-4 bg-[#009EE3] text-white text-sm font-medium uppercase tracking-widest transition-all hover:bg-[#0088C3] disabled:opacity-70 rounded-md"
+                  >
+                    {procesandoPago ? (
+                      <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+                    ) : (
+                      <>
+                        <svg viewBox="0 0 100 100" className="w-6 h-6 fill-current">
+                          <path d="M50 10C27.9 10 10 27.9 10 50s17.9 40 40 40 40-17.9 40-40S72.1 10 50 10zm-3 58L32 53l5.6-5.6 9.4 9.4 25.4-25.4L78 37 47 68z"/>
+                        </svg>
+                        Pagar seña con Mercado Pago
+                      </>
+                    )}
+                  </button>
                 </div>
+              </form>
+            ) : (
+              <div className="mt-6 border-t border-gray-100 pt-6">
+                 <p className="text-sm text-gray-600 font-medium mb-4 text-center">Continúa el proceso de pago seguro:</p>
+                 <Wallet initialization={{ preferenceId: preferenceId }} />
               </div>
+            )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <label className="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-2">DNI</label>
-                  <input 
-                    required type="text" 
-                    value={dni} onChange={(e) => setDni(e.target.value)}
-                    className="w-full px-2 py-3 border border-gray-400 rounded-[10px] focus:border-black outline-none transition-colors font-light text-gray-900"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-2">Teléfono</label>
-                  <input 
-                    required type="tel" 
-                    value={telefono} onChange={(e) => setTelefono(e.target.value)}
-                    className="w-full px-2 py-3 border border-gray-400 rounded-[10px] focus:border-black outline-none transition-colors font-light text-gray-900"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-gray-400 uppercase tracking-widest mb-2">Correo Electrónico</label>
-                <input 
-                  required type="email" 
-                  value={mail} onChange={(e) => setMail(e.target.value)}
-                  className="w-full px-2 py-3 border border-gray-400 rounded-[10px] focus:border-black outline-none transition-colors font-light text-gray-900"
-                />
-              </div>
-
-              <div className="pt-6 border-t border-gray-100">
-                <p className="text-xs text-gray-500 font-light mb-6 leading-relaxed">
-                  Al hacer clic en Pagar seña, serás redirigido a la plataforma segura de Mercado Pago para completar la operación. La seña asegura la reserva del vehículo a tu nombre y bloquea la disponibilidad para otros usuarios.
-                </p>
-                <button 
-                  type="submit"
-                  disabled={procesandoPago}
-                  className="w-full flex items-center justify-center gap-3 py-4 bg-[#009EE3] text-white text-sm font-medium uppercase tracking-widest transition-all hover:bg-[#0088C3] disabled:opacity-70 rounded-md"
-                >
-                  {procesandoPago ? (
-                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
-                  ) : (
-                    <>
-                      <svg viewBox="0 0 100 100" className="w-6 h-6 fill-current">
-                        <path d="M50 10C27.9 10 10 27.9 10 50s17.9 40 40 40 40-17.9 40-40S72.1 10 50 10zm-3 58L32 53l5.6-5.6 9.4 9.4 25.4-25.4L78 37 47 68z"/>
-                      </svg>
-                      Pagar seña con Mercado Pago
-                    </>
-                  )}
-                </button>
-              </div>
-
-            </form>
           </div>
 
         </div>
