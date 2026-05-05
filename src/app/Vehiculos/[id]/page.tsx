@@ -155,7 +155,7 @@ useEffect(() => {
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 md:py-24">
         
         <div className="mb-8">
-          <Link href="/Vehiculos" className="text-sm text-black font-light hover:text-gray-600 transition-colors">
+          <Link href="/Vehiculos" className="text-xl border-b border-black pb-1 hover:text-gray-600 transition-colors">
            Volver a vehículos
           </Link>
         </div>

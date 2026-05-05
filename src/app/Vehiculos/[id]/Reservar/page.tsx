@@ -125,7 +125,7 @@ export default function ReservarVehiculoPage() {
         <Header />
         <div className="flex-1 flex flex-col justify-center items-center px-6">
           <p className="text-xl font-light text-gray-900 uppercase tracking-widest mb-4">{error || 'Vehículo no encontrado'}</p>
-          <Link href="/vehiculos" className="text-sm border-b border-black pb-1 hover:text-gray-600">Volver al catálogo</Link>
+          <Link href="/Vehiculos" className="text-sm border-b border-black pb-1 hover:text-gray-600">Volver al catálogo</Link>
         </div>
         <Footer />
       </div>
@@ -147,19 +147,22 @@ export default function ReservarVehiculoPage() {
         </h1>
         <p className="text-gray-400 font-light tracking-wide text-sm">Estás a un paso de asegurar tu próximo vehículo.</p>
       </div>
-
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-        <div className="mb-8">
-          <Link href={`/Vehiculos/${vehiculo.id}`} className="text-sm text-black font-light hover:text-gray-600 transition-colors">
-            Volver a los detalles del vehículo
+        <div className="mb-8 mt-8 ml-8 px-6">
+          <Link href={`/Vehiculos/${vehiculo.id}`} className="text-xl text-black border border-black rounded-xl px-4 py-2 bg-red-300 font-light hover:bg-red-400 text-gray-700  transition-colors">
+            Volver
           </Link>
         </div>
+      <main className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           <div className="lg:col-span-5 bg-white p-6 rounded-3xl shadow-lg border border-gray-100">
-            <h3 className="text-sm font-medium text-gray-400 uppercase tracking-widest mb-6 border-b border-gray-100 pb-4">
+            <h3 className="text-m font-medium text-gray-400 uppercase tracking-widest mb-6 border-b border-gray-100 pb-4">
               Resumen de la operación
             </h3>
+            <h3 className="text-xl font-medium text-red-700 uppercase tracking-widest mb-6 border-b border-gray-100 pb-4">
+              Las reservas vencen pasados los 21 días
+            </h3>            
             
             <div className="aspect-video w-full bg-gray-100 rounded-xl overflow-hidden mb-6 relative">
               {fotoPortada ? (

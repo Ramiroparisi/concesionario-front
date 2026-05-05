@@ -67,6 +67,36 @@ export default function VehiculosPage() {
     fetchDatos();
   }, []);
 
+const [currentService, setCurrentService] = useState(0);
+
+  const servicios = [
+    {
+      title: "Servicio técnico oficial",
+      icon: <GoGear size={48} />,
+      content: "Nuestros talleres cuentan con la certificación y las herramientas originales de fábrica. Cada reparación es realizada por técnicos especializados que conocen tu vehículo como nadie más, garantizando la seguridad, el rendimiento y la durabilidad a largo plazo."
+    },
+    {
+      title: "Atención personalizada",
+      icon: <BsFillPersonCheckFill size={48} />,
+      content: "Desde la primera consulta hasta el servicio posventa, un asesor dedicado te acompañará en cada paso. Nuestros vendedores están altamente capacitados para entender tus necesidades y guiarte hacia el vehículo perfecto para vos."
+    },
+    {
+      title: "Recepción Activa",
+      icon: <PiHandEye size={48} />,
+      content: "En Parisi Motors, valoramos tu tiempo. La recepción activa es un servicio que te permite interactuar directamente. Juntos, podemos revisar el estado del auto, diagnosticar posibles problemas y acordar los trabajos a realizar."
+    },
+    {
+      title: "Gestión y patentamiento",
+      icon: <FaCheckCircle size={48} />,
+      content: "Simplificamos el proceso de compra. Nuestro equipo de gestoría se encarga de todo el trámite de patentamiento y documentación por vos. Así, podés disfrutar de tu nuevo vehículo sin demoras ni preocupaciones adicionales."
+    }
+  ];
+const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const scrollLeft = e.currentTarget.scrollLeft;
+    const width = e.currentTarget.offsetWidth;
+    const index = Math.round(scrollLeft / width);
+    setCurrentService(index);
+  };
 
   const marcasDisponibles = Array.from(new Set(vehiculos.map(v => typeof v.modelo === 'object' && typeof v.modelo.marca === 'object' ? v.modelo.marca.nombre : 'Sin Marca')));
   const modelosDisponibles = Array.from(new Set(vehiculos.filter(v => marcaFiltro === '' || (typeof v.modelo.marca === 'object' ? v.modelo.marca.nombre : v.modelo.marca) === marcaFiltro).map(v => typeof v.modelo === 'object' ? v.modelo.nombre : v.modelo)));
@@ -103,65 +133,62 @@ export default function VehiculosPage() {
         </div>
       </div>
 
-      <div className="flex flex-row items-center justify-center md:justify-center space-x-24 py-24">
-        <p className="flex gap-2 text-gray-900 hover:text-gray-400 transition-colors">
-          <SiBmw size={220} /> 
+
+      <div className="flex flex-wrap items-center justify-center gap-8 md:gap-24 py-12 md:py-24 px-6">
+        <p className="text-gray-900 hover:text-gray-400 transition-colors">
+          <SiBmw className="w-18 h-18 md:w-[220px] md:h-[220px]" /> 
         </p>
 
-        <p className="flex gap-2 text-gray-900 hover:text-gray-400 transition-colors">
-          <MBLogo width={420} height={420} /> 
-        </p>
-          
-        <p className="flex gap-2 text-gray-900 hover:text-gray-400 transition-colors">
-          <SiAlfaromeo size={220}/>
+
+          <div className="w-32 h-32 md:w-[420px] md:h-[420px] flex items-center justify-center">        
+            <p className="text-gray-900 hover:text-gray-400 transition-colors">
+            <MBLogo width="100%" height="100%" /> 
+            </p>
+          </div>
+
+    
+        <p className="text-gray-900 hover:text-gray-400 transition-colors">
+          <SiAlfaromeo className="w-18 h-18 md:w-[220px] md:h-[220px]"/>
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-24">
-        <h2 className="text-5xl font-normal text-gray-900 mb-12 ml-4">
-          Nuestros servicios 
+      <div className="max-w-7xl mx-auto px-6 py-12 md:py-24 w-full">
+        <h2 className="text-4xl md:text-5xl font-normal text-gray-900 mb-12">
+          Nuestros servicios
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">   
-
-          <div className="bg-white p-8 rounded-[40px] border-2 border-black shadow-2xl shadow-gray-200/50 flex flex-col items-start text-left min-h-[450px] transition-transform duration-300 hover:scale-105">
-            <GoGear size={48} className="mb-6 text-black" />
-            <h3 className="text-2xl font-medium text-gray-900 leading-tight mb-4">
-              Servicio técnico oficial
-            </h3>
-            <p className="text-sm text-gray-700 font-light leading-relaxed">
-              Nuestros talleres cuentan con la certificación y las herramientas originales de fábrica. Cada reparación es realizada por técnicos especializados que conocen tu vehículo como nadie más, garantizando la seguridad, el rendimiento y la durabilidad a largo plazo.
-            </p>
+        <div className="relative group">
+          <div 
+            onScroll={handleScroll}
+            className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar md:grid md:grid-cols-2 lg:grid-cols-4 gap-8 pb-10"
+          >
+            {servicios.map((servicio, index) => (
+              <div 
+                key={index}
+                className="min-w-full md:min-w-0 snap-center bg-white p-10 rounded-[50px] shadow-[0_20px_50px_rgba(0,0,0,0.05)] flex flex-col items-start text-left min-h-[450px] border border-gray-50"
+              >
+                <div className="mb-8 text-black">
+                  {servicio.icon}
+                </div>
+                <h3 className="text-3xl font-medium text-gray-900 leading-tight mb-6">
+                  {servicio.title}
+                </h3>
+                <p className="text-base text-gray-600 font-light leading-relaxed">
+                  {servicio.content}
+                </p>
+              </div>
+            ))}
           </div>
 
-          <div className="bg-white p-8 rounded-[40px] border-2 border-black shadow-2xl shadow-gray-200/50 flex flex-col items-start text-left min-h-[450px] transition-transform duration-300 hover:scale-105">
-            <BsFillPersonCheckFill size={48} className="mb-6 text-black" />
-            <h3 className="text-2xl font-medium text-gray-900 leading-tight mb-4">
-              Atención personalizada
-            </h3>
-            <p className="text-sm text-gray-700 font-light leading-relaxed">
-              Desde la primera consulta hasta el servicio posventa, un asesor dedicado te acompañará en cada paso. Nuestros vendedores están altamente capacitados para entender tus necesidades y guiarte hacia el vehículo perfecto para vos.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-[40px] border-2 border-black shadow-2xl shadow-gray-200/50 flex flex-col items-start text-left min-h-[450px] transition-transform duration-300 hover:scale-105">
-            <PiHandEye size={48} className="mb-6 text-black" />
-            <h3 className="text-2xl font-medium text-gray-900 leading-tight mb-4">
-              Recepción Activa
-            </h3>
-            <p className="text-sm text-gray-700 font-light leading-relaxed">
-              En Parisi Motors, valoramos tu tiempo. La recepción activa es un servicio que te permite interactuar directamente. Juntos, podemos revisar el estado del auto, diagnosticar posibles problemas y acordar los trabajos a realizar, garantizando total transparencia.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-[40px] border-2 border-black shadow-2xl shadow-gray-200/50 flex flex-col items-start text-left min-h-[450px] transition-transform duration-300 hover:scale-105">
-            <FaCheckCircle size={48} className="mb-6 text-black" />
-            <h3 className="text-2xl font-medium text-gray-900 leading-tight mb-4">
-              Gestión y patentamiento
-            </h3>
-            <p className="text-sm text-gray-700 font-light leading-relaxed">
-              Simplificamos el proceso de compra. Nuestro equipo de gestoría se encarga de todo el trámite de patentamiento y documentación por vos. Así, podés disfrutar de tu nuevo vehículo sin demoras ni preocupaciones adicionales.
-            </p>
+          <div className="flex justify-center space-x-3 mt-4 md:hidden">
+            {servicios.map((_, index) => (
+              <div
+                key={index}
+                className={`h-2.5 w-2.5 rounded-full transition-all duration-300 ${
+                  currentService === index ? 'bg-gray-800 w-6' : 'bg-gray-300'
+                }`}
+              />
+            ))}
           </div>
         </div>
       </div>

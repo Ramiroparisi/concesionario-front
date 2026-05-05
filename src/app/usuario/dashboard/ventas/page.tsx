@@ -64,8 +64,11 @@ export default function VehiculosPage() {
           return;
         }
 
-        const data = await getVehiculos();
-        setVehiculos(data); 
+        const ven = await api.get('/vehiculos');
+        const vehiculosVendidos = ven.data.data.filter((v: Vehiculo) => 
+          v.estado === 'Vendido'
+        );
+        setVehiculos(vehiculosVendidos);
 
       } catch (err) {
         setError('No se pudieron cargar los vehículos');
@@ -130,13 +133,10 @@ export default function VehiculosPage() {
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-100">
-              Gestión de Vehículos
+              Gestión de Ventas
             </h1>
           </div>
   
-          <Link href="/usuario/dashboard/vehiculos/nuevoVehiculo" className=" sm:block bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition font-medium">
-            Nuevo Vehículo
-          </Link>
         </header>
 
         {!cargando && !error && (

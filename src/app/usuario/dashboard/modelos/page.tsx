@@ -100,15 +100,15 @@ export default function ModelosPage() {
 
         <header className="flex items-center justify-between mb-6 pb-4 border-b border-gray-800">
           <div className="flex items-center">
-            <button
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="mr-4 p-2 bg-gray-800 text-gray-300 rounded-lg hover:text-white hover:bg-gray-700 transition-colors border border-gray-700"
-              aria-label="Toggle Sidebar"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
+            <div className="relative z-[60] md:z-auto"> 
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="mr-4 p-2 bg-gray-800 text-gray-300 rounded-lg hover:text-white hover:bg-gray-700 transition-colors border border-gray-700 shadow-xl">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-100">
               Gestión de Modelos
             </h1>
@@ -151,12 +151,13 @@ export default function ModelosPage() {
               {error}
             </div>
           ) : (
-            <table className="w-full text-left">
-              <thead className="bg-gray-500 border-b border-gray-700 text-white">
-                <tr>
-                  <th className="p-4 font-semibold">Nombre</th>
-                  <th className="p-4 font-semibold text-center">Marca</th>
-                  <th className="p-4 font-semibold text-center">Cantidad de puertas</th>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead className="bg-gray-500 border-b border-gray-700 text-white">
+                  <tr>
+                    <th className="p-4 font-semibold">Nombre</th>
+                    <th className="p-4 font-semibold text-center">Marca</th>
+                    <th className="p-4 font-semibold text-center">Cantidad de puertas</th>
                   <th className="p-4 font-semibold text-center">Combustible</th>
                   <th className="p-4 font-semibold text-center">Motor</th>
                   <th className="p-4 font-semibold text-center">Potencia (CV)</th>
@@ -196,6 +197,7 @@ export default function ModelosPage() {
                   )}
                 </tbody>
             </table>
+          </div>
           )}
         </div>
         

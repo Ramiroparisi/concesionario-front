@@ -145,7 +145,6 @@ export default function EditarVehiculoPage() {
     window.location.reload(); 
   };
 
-  // NUEVA FUNCIÓN: Eliminar vehículo
   const handleEliminar = async () => {
     const confirmar = window.confirm('¿Estás seguro de que deseas eliminar este vehículo? Esta acción no se puede deshacer y borrará sus fotos.');
     if (confirmar) {
@@ -173,15 +172,15 @@ export default function EditarVehiculoPage() {
 
       <main className="flex-1 flex flex-col h-screen overflow-y-auto p-4 sm:p-8">
         <header className="flex items-center mb-8 pb-4 border-b border-gray-700">
-          <button
-            type="button"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="mr-4 p-2 bg-gray-800 text-gray-300 rounded-lg hover:text-white border border-gray-700 transition-colors"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
+            <div className="relative z-[60] md:z-auto"> 
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="mr-4 p-2 bg-gray-800 text-gray-300 rounded-lg hover:text-white hover:bg-gray-700 transition-colors border border-gray-700 shadow-xl">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-100">
             Editar Vehículo
           </h1>
@@ -362,12 +361,31 @@ export default function EditarVehiculoPage() {
                 </button>
               </div>
 
-              <button
+            <div className="flex flex-wrap py-4 gap-3 w-full">
+                <button
+                  type="button"
+                  onClick={handleEliminar}
+                  disabled={estado === 'Reservado'}
+                  className={`flex-1 px-4 py-3 text-white rounded-xl font-medium transition-colors ${
+                  estado === 'Reservado'
+                  ? 'bg-gray-400 opacity-60 cursor-not-allowed'
+                  : 'bg-red-500 hover:bg-red-400'
+                  }`}>
+                  {estado === 'Reservado' ? 'Auto Reservado (No se puede eliminar)' : 'Eliminar Vehículo'}
+                </button>
+
+               <button
                 type="button"
-                onClick={handleEliminar}
-                className="w-full px-4 py-3 bg-red-100 text-red-600 border border-red-700 rounded-xl hover:bg-red-200 transition-colors font-medium">
-                 Eliminar Vehículo
-              </button>
+                onClick={() => router.push(`/usuario/dashboard/vehiculos/${vehiculoId}/reservaPresencial`)}
+                disabled={estado !== 'Disponible'} 
+                className={`flex-1 px-4 py-3 text-white rounded-xl font-bold transition-all shadow-md
+                ${estado === 'Disponible' 
+                  ? 'bg-green-600 hover:bg-green-700 cursor-pointer' 
+                  : 'bg-gray-400 opacity-60 cursor-not-allowed'
+                }`}>
+                {estado === 'Disponible' ? 'Reservar' : `Vehículo ${estado}`}
+               </button>
+             </div>             
               </>
             ) : (
           <div className="flex flex-wrap gap-3 w-full">
