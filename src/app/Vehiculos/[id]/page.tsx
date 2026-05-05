@@ -74,7 +74,7 @@ export default function VehiculoDetallePage() {
         setVehiculo(data);
         
         if (data.multimedia && data.multimedia.length > 0) {
-          setImagenActiva(`http://localhost:3000/uploads/${data.multimedia[0].archivo}`);
+          setImagenActiva(`src={foto.archivo}${data.multimedia[0].archivo}`);
         }
       } catch (err) {
         setError('No se pudo cargar la información del vehículo.');
@@ -190,7 +190,7 @@ useEffect(() => {
             {vehiculo.multimedia && vehiculo.multimedia.length > 1 && (
               <div className="flex space-x-4 overflow-x-auto pb-2 scrollbar-hide">
                 {vehiculo.multimedia.map((media) => {
-                  const url = `http://localhost:3000/uploads/${media.archivo}`;
+                  const url = `src={foto.archivo}${media.archivo}`;
                   return (
                     <button 
                       key={media.id}

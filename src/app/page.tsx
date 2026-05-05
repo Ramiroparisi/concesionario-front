@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { pagina_principal } from '@/assets/images';
 import Footer from '@/components/Footer';
 import { SiBmw } from "react-icons/si";
-import { TbBrandMercedes } from "react-icons/tb";
 import { MBLogo } from '@cardog-icons/react';
 import { SiAlfaromeo } from "react-icons/si";
 import { GoGear } from "react-icons/go";
@@ -289,7 +288,7 @@ const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
                 vehiculosPaginados.map((vehiculo) => {
                   const nombreMarca = typeof vehiculo.modelo === 'object' && typeof vehiculo.modelo.marca === 'object' ? vehiculo.modelo.marca.nombre : 'Sin Marca';
                   const nombreModelo = typeof vehiculo.modelo === 'object' ? vehiculo.modelo.nombre : vehiculo.modelo;
-                  const fotoPortada = vehiculo.multimedia && vehiculo.multimedia.length > 0 ? `http://localhost:3000/uploads/${vehiculo.multimedia[0].archivo}` : null;
+                  const fotoPortada = vehiculo.multimedia && vehiculo.multimedia.length > 0 ? `src={foto.archivo}${vehiculo.multimedia[0].archivo}` : null;
 
                   return (
                     <Link

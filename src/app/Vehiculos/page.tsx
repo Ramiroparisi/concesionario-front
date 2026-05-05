@@ -183,7 +183,7 @@ export default function VehiculosPage() {
                 vehiculosPaginados.map((vehiculo) => {
                   const nombreMarca = typeof vehiculo.modelo === 'object' && typeof vehiculo.modelo.marca === 'object' ? vehiculo.modelo.marca.nombre : 'Sin Marca';
                   const nombreModelo = typeof vehiculo.modelo === 'object' ? vehiculo.modelo.nombre : vehiculo.modelo;
-                  const fotoPortada = vehiculo.multimedia && vehiculo.multimedia.length > 0 ? `http://localhost:3000/uploads/${vehiculo.multimedia[0].archivo}` : null;
+                  const fotoPortada = vehiculo.multimedia && vehiculo.multimedia.length > 0 ? `src={foto.archivo}${vehiculo.multimedia[0].archivo}` : null;
 
                   return (
                     <Link

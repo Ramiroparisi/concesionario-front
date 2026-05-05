@@ -201,7 +201,7 @@ export default function EditarVehiculoPage() {
                   {fotosActuales.map((foto) => (
                     <img 
                       key={foto.id} 
-                      src={`http://localhost:3000/uploads/${foto.archivo}`} 
+                      src= {foto.archivo} 
                       alt="Foto vehículo" 
                       className={`w-32 h-24 object-cover rounded-xl border border-gray-200 shadow-sm flex-shrink-0 transition-opacity ${fotosNuevas ? 'opacity-30' : 'opacity-100'}`}
                     />
