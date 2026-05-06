@@ -45,7 +45,7 @@ export default function ReservasPage() {
       try {
         const authRes = await api.get('/auth/verify-token');
         const rol = authRes.data.user?.rol;
-        
+
         if (rol !== 'Admin' && rol !== 'Empleado') {
           router.push('/usuario/login');
           return;
