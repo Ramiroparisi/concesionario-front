@@ -204,8 +204,8 @@ export default function VehiculosPage() {
               vehiculosFiltrados.map((vehiculo) => {
               const nombreMarca = typeof vehiculo.modelo === 'object' && typeof vehiculo.modelo.marca === 'object' ? vehiculo.modelo.marca.nombre : 'Sin Marca';
               const nombreModelo = typeof vehiculo.modelo === 'object' ? vehiculo.modelo.nombre : vehiculo.modelo;
-              const fotoPortada = vehiculo.multimedia && vehiculo.multimedia.length > 0 ? `src={foto.archivo}${vehiculo.multimedia[0].archivo}` : null;
-
+              const fotoPortada = vehiculo.multimedia && vehiculo.multimedia.length > 0 ? vehiculo.multimedia[0].archivo : null;
+              
                 return (
                   <Link 
                     href={`/usuario/dashboard/vehiculos/${vehiculo.id}`} 
