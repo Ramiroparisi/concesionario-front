@@ -74,7 +74,7 @@ export default function VehiculoDetallePage() {
         setVehiculo(data);
         
         if (data.multimedia && data.multimedia.length > 0) {
-          setImagenActiva(`src={foto.archivo}${data.multimedia[0].archivo}`);
+          setImagenActiva(data.multimedia[0].archivo);
         }
       } catch (err) {
         setError('No se pudo cargar la información del vehículo.');
@@ -190,17 +190,15 @@ useEffect(() => {
             {vehiculo.multimedia && vehiculo.multimedia.length > 1 && (
               <div className="flex space-x-4 overflow-x-auto pb-2 scrollbar-hide">
                 {vehiculo.multimedia.map((media) => {
-                  const url = `src={foto.archivo}${media.archivo}`;
+                  const url = media.archivo;
                   return (
-                    <button 
-                      key={media.id}
-                      onClick={() => setImagenActiva(url)}
-                      className={`flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden border-2 transition-all ${
-                        imagenActiva === url ? 'border-black opacity-100' : 'border-transparent opacity-60 hover:opacity-100'
-                      }`}
-                    >
-                      <img src={url} alt="Miniatura" className="w-full h-full object-cover" />
-                    </button>
+                   <button 
+                    key={media.id}
+                    onClick={() => setImagenActiva(url)}
+                    className={`flex-shrink-0 w-24 h-24 rounded-lg overflow-hidden border-2 transition-all ${imagenActiva === url ? 'border-black opacity-100' : 'border-transparent opacity-60 hover:opacity-100'
+                  }`}>
+                   <img src={url} alt="Miniatura" className="w-full h-full object-cover" />
+                   </button>
                   );
                 })}
               </div>
