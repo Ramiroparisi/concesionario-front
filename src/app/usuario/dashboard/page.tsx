@@ -47,7 +47,8 @@ export default function DashboardPage() {
       <Sidebar isOpen={isSidebarOpen} />
 
       <main className="flex-1 p-4 sm:p-8 overflow-y-auto">
-        <header className="mb-8">
+        <header className="flex items-center justify-between mb-8 pb-4 border-b border-gray-700">
+          <div className="flex items-center">
             <div className="relative z-[60] md:z-auto"> 
               <button
                 onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -60,6 +61,7 @@ export default function DashboardPage() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-300">
             Panel de gestión
           </h1>
+        </div>
         </header>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
