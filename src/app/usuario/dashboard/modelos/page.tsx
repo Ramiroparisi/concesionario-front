@@ -92,11 +92,11 @@ export default function ModelosPage() {
   }).sort((a, b) => a.marca.nombre.localeCompare(b.marca.nombre, 'es', { sensitivity: 'base' }));
 
   return (
-    <div className="flex h-screen bg-gray-900 overflow-hidden">
+    <div className="flex bg-gray-900 overflow-hidden">
       
       <Sidebar isOpen={isSidebarOpen} /> 
       
-      <main className="flex-1 flex flex-col h-screen overflow-y-auto p-4 sm:p-8">
+      <main className="flex-1 flex flex-col overflow-y-auto p-4 sm:p-8">
 
         <header className="flex items-center justify-between mb-6 pb-4 border-b border-gray-800">
           <div className="flex items-center">
