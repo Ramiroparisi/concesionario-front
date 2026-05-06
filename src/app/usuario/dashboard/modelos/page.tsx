@@ -176,14 +176,20 @@ export default function ModelosPage() {
                         <td className="p-4 text-center">{modelo.motor}</td>
                         <td className="p-4 text-center">{modelo.potencia}</td>
                         <td className="p-4 text-center">{modelo.transmision}</td>
-                        <td className="p-4 text-center space-x-2">
-                        <Link href={`/usuario/dashboard/modelos/${modelo.id}`} className="inline-block bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors font-medium">
-                          Editar
-                        </Link>
-                        <button onClick={() => handleEliminar(modelo.id, modelo.nombre)} className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-800 transition-colors font-medium" >
-                          Eliminar
-                        </button>
-                      </td>
+                        <td className="p-4">
+                         <div className="flex items-center justify-center gap-2 whitespace-nowrap">
+                          <Link 
+                            href={`/usuario/dashboard/modelos/${modelo.id}`} 
+                            className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors font-medium text-sm">
+                            Editar
+                          </Link>
+                          <button 
+                            onClick={() => handleEliminar(modelo.id, modelo.nombre)} 
+                            className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-800 transition-colors font-medium text-sm">
+                             Eliminar
+                          </button>
+                         </div>
+                        </td>
                       </tr>
                     ))
                   ) : (

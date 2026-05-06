@@ -134,15 +134,16 @@ export default function EmpleadosPage() {
                       <td className="p-4 font-medium">{empleado.domicilio}</td>
                       <td className="p-4 font-medium">{empleado.cuil}</td>
                       <td className="p-4 font-medium">{empleado.fechaNac ? new Date(empleado.fechaNac).toLocaleDateString('es-AR', { timeZone: 'UTC' }) : '-'}</td>
-
-                      <td className="p-4 text-center space-x-2">
-                      <Link href={`/usuario/dashboard/empleados/${empleado.id}`} className="inline-block bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors font-medium">
+                      <td className="p-4">
+                       <div className="flex items-center justify-center gap-2 whitespace-nowrap">
+                        <Link href={`/usuario/dashboard/empleados/${empleado.id}`} className="inline-block bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors font-medium">
                         Editar
-                      </Link>
-                      <button onClick={() => handleEliminar(empleado.id, empleado.nombre)} className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-800 transition-colors font-medium" >
+                        </Link>
+                        <button onClick={() => handleEliminar(empleado.id, empleado.nombre)} className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-800 transition-colors font-medium" >
                         Eliminar
-                      </button>
-                    </td>
+                        </button>
+                       </div>
+                      </td>
                     </tr>
                   ))
                 ) : (
