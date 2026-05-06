@@ -2,15 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 
 export default function ReservaPresencialPage() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://concesionario-back-production.up.railway.app/api';
   const { id } = useParams();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  // Estado para el formulario
   const [formData, setFormData] = useState({
     nombreCli: '',
     apellidoCli: '',
@@ -35,7 +34,7 @@ export default function ReservaPresencialPage() {
     };
 
     try {
-      const response = await fetch('${apiUrl}/reservas/presencial', {
+      const response = await fetch(`${apiUrl}/reservas/presencial`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datosParaEnviar),
