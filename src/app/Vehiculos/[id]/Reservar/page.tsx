@@ -134,7 +134,7 @@ export default function ReservarVehiculoPage() {
 
   const nombreMarca = vehiculo.modelo?.marca?.nombre || 'Sin Marca';
   const nombreModelo = vehiculo.modelo?.nombre || 'Sin Modelo';
-  const fotoPortada = vehiculo.multimedia && vehiculo.multimedia.length > 0 ? `http://localhost:3000/uploads/${vehiculo.multimedia[0].archivo}` : null;
+  const fotoPortada = vehiculo.multimedia && vehiculo.multimedia.length > 0 ? vehiculo.multimedia[0].archivo : null;
   const IMPORTE_SENA = 100; 
 
   return (
@@ -165,11 +165,16 @@ export default function ReservarVehiculoPage() {
             </h3>            
             
             <div className="aspect-video w-full bg-gray-100 rounded-xl overflow-hidden mb-6 relative">
-              {fotoPortada ? (
-                <img src={fotoPortada} alt={nombreModelo} className="w-full h-full object-cover" />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs uppercase tracking-widest">Sin imagen</div>
-              )}
+             {fotoPortada ? (
+              <img 
+               src={fotoPortada} 
+               alt={nombreModelo} 
+               className="w-full h-full object-cover" />
+             ) : (
+               <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs uppercase tracking-widest">
+                 Sin imagen
+               </div>
+             )}
             </div>
 
             <div className="mb-6">
